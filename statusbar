@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e 
+status=$(git status -bs 2> /dev/null)
+if [ -z "$status" ]; then
+    echo "here!!!"
+    exit 0;
+fi
+branch=$(echo $status | awk  '{print $2}')
+echo $branch
+echo $(basename `git rev-parse --show-toplevel`)

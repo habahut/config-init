@@ -1,0 +1,3 @@
+camelcasemotion.vba.gz: call delete('/home/trevor/.vim/autoload/camelcasemotion.vim')|call delete('/home/trevor/.vim/plugin/camelcasemotion.vim')|call delete('/home/trevor/.vim/doc/camelcasemotion.txt')
+camelcasemotion.vba.gz: call delete('/home/trevor/.vim/autoload/camelcasemotion.vim')|call delete('/home/trevor/.vim/plugin/camelcasemotion.vim')|call delete('/home/trevor/.vim/doc/camelcasemotion.txt')
+camelcasemotion.vba: call delete('/home/trevor/.vim/autoload/camelcasemotion.vim')|call delete('/home/trevor/.vim/plugin/camelcasemotion.vim')|call delete('/home/trevor/.vim/doc/camelcasemotion.txt')
