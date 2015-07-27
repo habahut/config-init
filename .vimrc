@@ -29,6 +29,10 @@ set t_Co=256
 :let g:html_indent_inctags = "html,body,head,tbody" 
 " set indentxpr to increase indent on ':'
 
+" ctrlp settings
+:let g:ctrlp_max_files=0 " prevent ctrlp from having a max file limit
+:let g:ctrlp_custom_ignore = '*.git$'
+
 set grepprg=ack-grep
 set shiftwidth=4
 "set tabstop=4
@@ -52,7 +56,14 @@ set laststatus=2
 set statusline=%<%F\ %h%m%r%=%-14.(%l,%c%V%)\ %13.L\ %P 
 set titlestring=%F
 set splitbelow
+set splitright
 set lbr " proper word wrap
+
+" reload the last line in the file:
+if has("autocmd")
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+        \| exe "normal! g'\"" | endif
+endif
 
 command! Q bd
 
@@ -60,6 +71,7 @@ nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> <nop>
 nnoremap <right> <nop>
+nnoremap Q <nop>
 " need to remap the c key to use the right register
 nnoremap k gk
 vnoremap k gk
@@ -73,6 +85,7 @@ map H ^
 map L $
 map G G$
 imap jj <esc>
+imap kkk <esc>
 inoremap <F1> <esc>
 nnoremap <F1> <esc>
 vnoremap <F1> <esc>
@@ -103,6 +116,8 @@ vnoremap <C-c> "+y
 nnoremap <C-p> "+p
 nnoremap <C-P> "+P
 nnoremap <C-d> 0D
+nnoremap B J
+nnoremap ` .
 
 nnoremap <leader>i <C-w>v<C-w>l
 nnoremap <leader>h <C-w>s<C-w>j
@@ -129,7 +144,8 @@ nnoremap <leader><down> :res +5<cr>
 nnoremap <leader>[ /\v\{<cr> 
 nnoremap <leader>] /\v\}<cr> 
 nnoremap <leader>P :CtrlP 
-nnoremap <leader>p :CtrlP<cr>
+nnoremap <leader>p :CtrlP ~/storage/PaperG/placelocal/<cr>
+"nnoremap <leader>p :CtrlP  <cr>
 nnoremap <leader>b :bufdo tab split<cr> :q<cr>
 nnoremap <leader>B :BufOnly!<cr>
 nnoremap <leader>` :tabedit $MYVIMRC<cr>
@@ -145,7 +161,6 @@ nnoremap <leader>~ :so $MYVIMRC<cr>
 nnoremap <leader>f :GrepTab 
 nnoremap <leader>F :NewTabFromReg<cr>
 nnoremap <leader>z :pwd<cr>
-nnoremap <leader>D :DiffSaved<cr>
 nnoremap <leader>l :LsTab<cr> 
 nnoremap <leader>o :let @o = expand("<cword>")<cr>
 nnoremap <leader>z :let @z = expand("%:p")<cr>:pwd<cr>
@@ -153,7 +168,7 @@ nnoremap <leader>z :let @z = expand("%:p")<cr>:pwd<cr>
 nnoremap <leader>. :vertical resize +10<cr>
 nnoremap <leader>, :vertical resize -10<cr>
 nnoremap <leader>g :%s/pick/squash/gc<cr>
-nnoremap <leader>v :vsplit<cr>
+nnoremap <leader>v :vsplit 
 
 " tab stuff
 nnoremap <leader>1 1gt
@@ -202,6 +217,11 @@ endif
 "                               "
 """""""""""""""""""""""""""""""""
 
+function! s:JsLint()
+    let f=expand("%") | vnew | execute '.! jshint "' . f . '"'
+endfunction
+com! -nargs=0 JSLINT call s:JsLint()
+
 function! s:NewSplitLs()
    new | r ! ls
 endfunction
@@ -227,7 +247,7 @@ function! s:NewTabGrep(...)
     endif
     echom "searching for: " . shellescape(searchStr) . " in: " . shellescape(dir)
     let @d = dir "expand("%:p:h") . "/"
-    tabnew | execute "r ! ack-grep ". shellescape(searchStr) ." ". shellescape(dir)
+    tabnew | execute "r ! ack-grep --ignore-directory=logs ". shellescape(searchStr) ." ". shellescape(dir)
     "how can we name this tab something useful?
 endfunction
 com! -nargs=? GrepTab call s:NewTabGrep('<args>')
@@ -253,6 +273,7 @@ function! s:NewTabFromRegister()
 endfunction
 com! NewTabFromReg call s:NewTabFromRegister()
 
+" should make this thing split left
 function! s:DiffWithSaved()
     let filetype=&ft
     diffthis
@@ -270,3 +291,4 @@ function! s:DiffWithGITCheckedOut()
     diffthis
 endfunction
 com! DiffGIT call s:DiffWithGITCheckedOut()
+

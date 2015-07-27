@@ -4,6 +4,8 @@ mkdir ~/bin
 
 ## just in case
 sudo apt-get install -y git-core
+# git config --global user.email "habahut@gmail.com"
+# git config --global user.name "Trevor Haba"
 
 ### tmux set up
 sudo apt-get install -y tmux
