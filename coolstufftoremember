@@ -1,0 +1,95 @@
+########## BASH
+
+## useful bash reference page:
+http://tldp.org/LDP/abs/html/textproc.html
+
+## find files with 'exception' in the name, -prune directories 'vendor' and 'node_modules'
+find . \( -name vendor -o -name node_modules \) -prune -o -iname '*exception*' -print
+
+## find files older than a day and within this directory only
+find . -mtime +1 -maxdepth 0 -iname '...'
+
+### ack-grep : ignore directories
+ack-grep --ignore-dir=some_directory 'search term'
+ack-grep --ignore-dir={dir1,dir2} 'search term'   # syntax will not work with just one directory
+## ignore file type
+ack-grep "notify_box" --ignore-file=ext:css --ignore-file=ext:scss
+
+# delete all lines that match a pattern, in place 
+sed -i '/pattern to match/d' ./file
+
+## show a process and its children
+# -A in grep shows n lines AFTER, -B shows n lines before match
+ps axjf | grep [process name] -A 10
+
+#rsync using ssh
+rsync -vz --rsh="ssh -i ../devcloud.pem" * ubuntu@ec2-54-87-217-58.compute-1.amazonaws.com:/home/ubuntu
+
+# run command for every line in a file
+# tr replaces \n with \0 which I guess is what xargs is expecting for delimiters. Which makes sense, \0 is space I believe 
+# or C style string termination
+# Not sure why you need the extra < here: <(tr ...)
+# for xargs, -I {} is required I believe. -0 prevents string weirdness and is good practice.
+xargs -0 -I {} aws s3 cp {} ./sampleTearsheets < <(tr \\n \\0 < tearsheetsS3 )
+
+# disc usage through commandline: http://superuser.com/questions/300606/how-to-analyse-disk-usage-in-command-line-linux
+# sudo apt-get install ncdu
+ncdu
+
+
+
+
+########## GIT
+#
+## see what branches have been merged or not merged
+git branch --merged master
+git branch --no-merged master
+
+# print branches in commit order
+git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname)' | sed 's/^.*\/.*\///'
+
+# print branches in commit order with pretty timestamp info
+for k in `git branch | sed s/^..//`; do echo -e `git log -1 --pretty=format:"%Cgreen%ci %Cblue%cr%Creset" $k --`\\t"$k";done | sort -r
+
+# view names of files that have changed between branches
+git diff --name-status frombranch..tobranc
+
+
+
+
+########## NETWORKING
+
+#port rerouting
+http://stackoverflow.com/questions/24180284/route-port-80-to-port-5000-with-iptables
+
+## redir: bounce http requests between ports
+
+## tcp dump
+https://danielmiessler.com/study/tcpdump/
+
+
+######### JAVASCRIPT
+
+## javascript promise example:
+# create promise:
+var promiseFactory = function(data) {
+    var deferred = $q.defer(),
+        promise = deferred.promise;
+    deferred.resolve(data);
+    return promise;
+};
+# unwrap promise
+MyHttpService.get('tearsheetStats').then(function(data) {
+    console.log("the tearsheet data: ", data);
+    $scope.tearsheetData = data;
+});
+
+
+
+########## VIM
+
+## vim search and replace nonmatching groups
+# vim does not have normal look ahead, instead it has stop and start capturing commands (wtf)
+12=>55    ->    12:55
+\d+\zs\=\>\ze\d+
+dont capture   \zs (start capture) capture \ze dont capture 
