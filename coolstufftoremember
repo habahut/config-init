@@ -36,6 +36,9 @@ xargs -0 -I {} aws s3 cp {} ./sampleTearsheets < <(tr \\n \\0 < tearsheetsS3 )
 # sudo apt-get install ncdu
 ncdu
 
+## diff two files:
+grep -vFxf file1 file2
+
 
 
 
@@ -54,6 +57,9 @@ for k in `git branch | sed s/^..//`; do echo -e `git log -1 --pretty=format:"%Cg
 # view names of files that have changed between branches
 git diff --name-status frombranch..tobranc
 
+# diff specific files between arbitrary branches
+# git diff branch:<file path> <file path>
+ls | xargs -I {} git diff next:./{} {} # diff all files in a directory
 
 
 
