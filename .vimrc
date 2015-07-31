@@ -85,7 +85,7 @@ map H ^
 map L $
 map G G$
 imap jj <esc>
-imap kkk <esc>
+imap kk <esc>
 inoremap <F1> <esc>
 nnoremap <F1> <esc>
 vnoremap <F1> <esc>

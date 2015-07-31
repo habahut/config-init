@@ -129,6 +129,9 @@ export PATH="$PATH:/usr/local/heroku/bin"
 
 capsChange
 
-source ~/storage/PaperG/paperg_aws_creds
-
 export TERM=screen-256color
+
+export PATH="$PATH:/home/trevor/bin/terraform"
+
+# arcanist for fabricator
+export PATH="$PATH:/home/trevor/storage/PaperG/phabricator/arcanist/bin"
