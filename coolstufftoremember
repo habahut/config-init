@@ -67,6 +67,13 @@ git diff --name-status frombranch..tobranc
 # git diff branch:<file path> <file path>
 ls | xargs -I {} git diff next:./{} {} # diff all files in a directory
 
+## Check all modified test files to see if any unit tests are commented out
+git diff --name-only mainline | grep tst | xargs cat | grep "//@Test"
+
+## when rebasing, take all changes from one branch our another: 
+# --ours == HEAD, --theirs == changes not in head (seems backwards)
+git checkout --ours/theirs  /path/to/file
+
 
 
 ########## NETWORKING
