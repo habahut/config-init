@@ -41,6 +41,12 @@ grep -vFxf file1 file2
 
 
 
+########## ZSH
+
+# color text:
+"\033[1;35mbold red text\033[0m\n"
+
+
 
 ########## GIT
 #
@@ -99,3 +105,7 @@ MyHttpService.get('tearsheetStats').then(function(data) {
 12=>55    ->    12:55
 \d+\zs\=\>\ze\d+
 dont capture   \zs (start capture) capture \ze dont capture 
+
+
+
+
